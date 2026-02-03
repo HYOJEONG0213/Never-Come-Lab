@@ -59,30 +59,10 @@ public class Weapon : MonoBehaviour
         damage = data.baseDamage;
         isSelected = data.isSelected;
 
-        //스크립트블 오브젝트의 독립성을 위해 인덱스가 아닌 프리펩으로 설정하기 
-        for (int index = 0; index < GameManager.Instance.pool.prefabs.Length; index++)
-        {
-            if (data.projectile == GameManager.Instance.pool.prefabs[index])
-            {
-                prefabId = index;
-                break;
-            }
-        }
+        prefabId = GameManager.Instance.pool.GetPrefabId(data.projectile);
 
-        //ItemData에 prefabId를 직접 저장하도록 리팩토링 필요
-        switch (id)
-        {
-            case 0: //공격 총알인 경우 
-                fireRate = 0.5f;
-                fireSound = AudioManager.Sfx.Bullet;
-                break;
-            case 1:
-                fireRate = 2.0f;
-                fireSound = AudioManager.Sfx.BindBullet;
-                break;
-            default:
-                break;
-        }
+        fireRate = data.fireRate;
+        fireSound = data.fireSound;
         
     }
 

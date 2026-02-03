@@ -19,3 +19,5 @@ MonoBehaviour:
   baseDamage: 10
   isSelected: 0
   projectile: {fileID: 7950596668381060084, guid: e8efc9f6ad9c4744ca191754a17c4c10, type: 3}
+  fireRate: 0.5
+  fireSound: 1

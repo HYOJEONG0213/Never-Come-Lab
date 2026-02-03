@@ -7,6 +7,8 @@ public class PoolManager : MonoBehaviour
     public GameObject[] prefabs;
     public List<GameObject>[] pools;
 
+    private Dictionary<string, int> prefabIdMap = new Dictionary<string, int>();
+
     void Awake()
     {
         pools = new List <GameObject> [prefabs.Length];
@@ -14,6 +16,11 @@ public class PoolManager : MonoBehaviour
         for(int index = 0; index < prefabs.Length; index++)
         {
             pools[index] = new List <GameObject> ();
+
+            if(!prefabIdMap.ContainsKey(prefabs[index].name))
+            {
+                prefabIdMap.Add(prefabs[index].name, index);
+            }
         }
     }
 
@@ -42,5 +49,14 @@ public class PoolManager : MonoBehaviour
         }
 
         return select;
+    }
+
+    public int GetPrefabId(GameObject prefab)
+    {
+        if (prefabIdMap.ContainsKey(prefab.name))
+        {
+            return prefabIdMap[prefab.name];
+        }
+        return -1;
     }
 }

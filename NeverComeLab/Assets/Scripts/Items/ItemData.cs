@@ -19,5 +19,7 @@ public class ItemData : ScriptableObject
 
     [Header("# Weapon")]
     public GameObject projectile;
+    public float fireRate;
+    public AudioManager.Sfx fireSound;
 
 }
