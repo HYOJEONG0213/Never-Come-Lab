@@ -3,13 +3,14 @@ using UnityEngine.UI;
 using System;
 
 
-public class Item : MonoBehaviour
+public class WeaponUISlot : MonoBehaviour
 {
-    public ItemData data;
+    [Header("Data")]
+    public WeaponData data;
 
     [Header("UI Reference")]
     public Button weaponButton;
-    Image icon;
+    public Image icon;
 
 
     private void Awake()
@@ -28,10 +29,11 @@ public class Item : MonoBehaviour
         if (WeaponManager.Instance != null)
         {
             WeaponManager.Instance.OnWeaponChanged += UpdateUI;
-            UpdateUI(data.isSelected ? data.itemId : -1);
+            UpdateUI(-1);
         }
     }
 
+    // 메모리 누수 방지용
     private void OnDestroy()
     {
         if (WeaponManager.Instance != null)
@@ -42,17 +44,18 @@ public class Item : MonoBehaviour
 
     public void OnClick()
     {
-        if(data.itemType == ItemData.ItemType.Weapon0 || data.itemType == ItemData.ItemType.Weapon1)
+        if(data != null)
         {
-            WeaponManager.Instance.EquipWeapon(data);
+            WeaponManager.Instance.ToggleWeapon(data);
         }
     }
 
     // 매니저가 무기 바뀌었다고 한다면
-    private void UpdateUI(int equippedWeaponId)
+    private void UpdateUI(int currentEquippedId)
     {
-        bool isEquipped = (data.itemId == equippedWeaponId);
-        SetButtonColor(isEquipped ? Color.gray : Color.white);
+        bool isSelected = (data.itemId == currentEquippedId);
+
+        SetButtonColor(isSelected ? Color.gray : Color.white);
     }
 
     private void SetButtonColor(Color color)

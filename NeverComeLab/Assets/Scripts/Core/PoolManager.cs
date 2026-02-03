@@ -24,6 +24,12 @@ public class PoolManager : MonoBehaviour
         }
     }
 
+    public GameObject Get(GameObject prefab)
+    {
+        if (!prefabIdMap.ContainsKey(prefab.name)) return null;
+        int index = prefabIdMap[prefab.name];
+        return Get(index);
+    }
     public GameObject Get(int index)
     {
         GameObject select = null;

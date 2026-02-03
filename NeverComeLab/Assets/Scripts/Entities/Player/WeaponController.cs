@@ -2,78 +2,46 @@ using UnityEngine;
 
 //몬스터->플레이어 공격 관련, 피격 효과 필요, 몬스터 공격시 여러번 적용되는 버그 수정 필요 
 
-public class Weapon : MonoBehaviour
+public class WeaponController : MonoBehaviour
 {
-    [Header("# References")]
-    public Transform pos;
-    Player player;
-    Vector3 inputVec;
+    private WeaponData weaponData;
 
-    [Header("# Weapon Info")]
-    public int id;
-    public int prefabId;
-    public float damage;
-    public bool isSelected;
-    public ItemData Itemdata;
-
-    [Header("# Stats")]
-    public float fireRate;
-    public AudioManager.Sfx fireSound;
-
-    float timer;
+    private float timer;
+    private Player player;
 
     private void Awake()
     {
         //Init();
         player = GameManager.Instance.player;
-        pos = GetComponent<Transform>();
     }
-    
+
+    public void Init(WeaponData data)
+    {
+        weaponData = data;
+        timer = 0f;
+
+    }
+
+
     private void Update()
     {
-        if (player.isDie) return;
-
-        isSelected = Itemdata.isSelected;
-        if (isSelected == false) return;
+        if (player == null || player.isDie) return;
 
         timer += Time.deltaTime;
 
-        if(timer > fireRate)
+        if(timer > weaponData.fireRate)
         {
             timer = 0f;
             Fire();
         }
     }
 
-    public void Init(ItemData data)
-    {
-        Itemdata = data;
-
-        //기본 셋팅
-        name = "Weapon " + data.itemId;
-        transform.parent = player.transform;    //weapon 부모를 player로 지정 
-        transform.localPosition = Vector3.zero;    //지역위치로 함으로써 플레이어 안으로 지정
-
-        //속성 셋팅
-        id = data.itemId;
-        damage = data.baseDamage;
-        isSelected = data.isSelected;
-
-        prefabId = GameManager.Instance.pool.GetPrefabId(data.projectile);
-
-        fireRate = data.fireRate;
-        fireSound = data.fireSound;
-        
-    }
-
+    
 
 
     void Fire()
     {
-        if(player == null || player.anim == null || player.spriter == null)
-        {
-            return;
-        }
+        if(player == null || player.anim == null || player.spriter == null) return;
 
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
         float rotation = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;    //dir 각 구하기 * 라디안을 도로 바꾸기
@@ -96,10 +64,9 @@ public class Weapon : MonoBehaviour
             }
         }
 
-        AudioManager.instance.PlaySfx(fireSound);
 
         //벽이 없다면 총알 정상 생성 
-        GameObject bullet = GameManager.Instance.pool.Get(prefabId);    //기존 오브젝트 재활용 하기 
+        GameObject bullet = GameManager.Instance.pool.Get(weaponData.projectile);    //기존 오브젝트 재활용 하기 
 
         //bullet.transform.position = pos.position;
         bullet.transform.position = transform.position;
@@ -108,9 +75,12 @@ public class Weapon : MonoBehaviour
         BaseBullet baseBullet = bullet.GetComponent<BaseBullet>();
         if (baseBullet != null)
         {
-            baseBullet.Init(damage);
+            baseBullet.Init(weaponData.baseDamage);
         }
+
+        AudioManager.instance.PlaySfx(weaponData.fireSound);
     }
 
 
+    
 }

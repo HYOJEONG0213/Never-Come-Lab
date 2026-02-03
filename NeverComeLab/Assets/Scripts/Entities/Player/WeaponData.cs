@@ -3,23 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Item", menuName = "Scriptble Object/ItemData")]
-public class ItemData : ScriptableObject
+public class WeaponData : ScriptableObject
 {
-    public enum ItemType { Weapon0, Weapon1};
-
     [Header("# Main Info")]
-    public ItemType itemType;
     public int itemId;
     public string itemName;
     public Sprite ItemIcon;
 
-    [Header("# Level Data")]
+    [Header("# Specs")]
     public float baseDamage;
-    public bool isSelected = false;
-
-    [Header("# Weapon")]
-    public GameObject projectile;
     public float fireRate;
     public AudioManager.Sfx fireSound;
+
+    [Header("# Resources")]
+    public GameObject projectile;
+    
 
 }

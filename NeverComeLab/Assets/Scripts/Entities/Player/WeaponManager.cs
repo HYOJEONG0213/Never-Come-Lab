@@ -8,79 +8,61 @@ public class WeaponManager : MonoBehaviour
     public static WeaponManager Instance;
     // UI 업데이트 이벤트
     public event Action<int> OnWeaponChanged;
-
-    [Header("Data Reset")]
-    public ItemData[] allWeaponData;
-
+    private int currentWeaponId = -1;
+    private Dictionary<int, WeaponController> createdWeapons = new Dictionary<int, WeaponController>();
 
     private void Awake()
     {
         Instance = this;
-
-        foreach (var weaponData in allWeaponData)
-        {
-            if (weaponData != null)
-            {
-                weaponData.isSelected = false;
-            }
-        }
     }
 
-    public void EquipWeapon(ItemData data)
+    public void ToggleWeapon(WeaponData data)
     {
         //같은 무기 또 선택시 해제 
-        if (data.isSelected)
+        if (currentWeaponId == data.itemId)
         {
-            UnequipAll();
+            UnequipCurrent();
             return;
         }
 
-        UnequipAll();
-        data.isSelected = true;
-
-        Weapon weaponObj = FindWeaponById(data.itemId);
-
-        if (weaponObj != null)
-        {
-            weaponObj.gameObject.SetActive(true);
-            weaponObj.Init(data);
-        }
-        else
-        {
-            GameObject newObj = new GameObject($"Weapon {data.itemId}");
-            newObj.transform.parent = transform;
-            newObj.transform.localPosition = Vector3.zero;
-            
-            Weapon newWeapon = newObj.AddComponent<Weapon>();
-            newWeapon.Init(data);
-        }
-
-        // UI에 이벤트 발송
-        OnWeaponChanged?.Invoke(data.itemId);
+        Equip(data);
     }
 
-    private void UnequipAll()
+    private void Equip(WeaponData data)
     {
-        Weapon[] weapons = GetComponentsInChildren<Weapon>(true);
-        foreach (Weapon weapon in weapons)
+        UnequipCurrent();
+
+        if (!createdWeapons.ContainsKey(data.itemId))
         {
-            weapon.gameObject.SetActive(false);
-            if (weapon.Itemdata != null) weapon.Itemdata.isSelected = false;
+            CreateWeaponObject(data);
         }
 
-        //아무것도 장착하지 않음
+        WeaponController weapon = createdWeapons[data.itemId];
+        weapon.gameObject.SetActive(true);
+        weapon.Init(data);
+
+        currentWeaponId = data.itemId;
+        OnWeaponChanged?.Invoke(currentWeaponId);
+    }
+    public void UnequipCurrent()
+    {
+        if (currentWeaponId != -1 && createdWeapons.ContainsKey(currentWeaponId))
+        {
+            createdWeapons[currentWeaponId].gameObject.SetActive(false);
+        }
+
+        currentWeaponId = -1;
         OnWeaponChanged?.Invoke(-1);
     }
 
-    private Weapon FindWeaponById(int itemId)
+    private void CreateWeaponObject(WeaponData data)
     {
-        Weapon[] weapons = GetComponentsInChildren<Weapon>(true);
-        foreach (Weapon weapon in weapons)
-        {
-            if(weapon.id == itemId) return weapon;
-        }
-        return null;
-    }
+        GameObject newWeapon = new GameObject($"Weapon_{data.itemName}");
+        newWeapon.transform.parent = transform;
+        newWeapon.transform.localPosition = Vector3.zero;
 
+        WeaponController newCtrl = newWeapon.AddComponent<WeaponController>();
+        createdWeapons.Add(data.itemId, newCtrl);
+    }
     
 }
