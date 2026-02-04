@@ -11,8 +11,10 @@ public class WeaponData : ScriptableObject
     public Sprite ItemIcon;
 
     [Header("# Specs")]
-    public float baseDamage;
+    public float damage;
     public float fireRate;
+    public float speed;
+    public float maxRange;
     public AudioManager.Sfx fireSound;
 
     [Header("# Resources")]

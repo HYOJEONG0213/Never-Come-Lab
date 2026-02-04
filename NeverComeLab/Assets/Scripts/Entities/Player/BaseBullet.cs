@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class BaseBullet : MonoBehaviour
 {
     protected float damage;
-    protected float speed = 5f;
+    protected float speed;
     protected float maxRange;
 
     protected Rigidbody2D rigid;
@@ -15,9 +15,11 @@ public abstract class BaseBullet : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
     }
 
-    public void Init(float damage)
+    public void Init(float damage, float speed, float maxRange)
     {
         this.damage = damage;
+        this.speed = speed;
+        this.maxRange = maxRange;
         rigid.velocity = Vector2.zero;
     } 
 
@@ -32,7 +34,7 @@ public abstract class BaseBullet : MonoBehaviour
         if (collision.CompareTag("Enemy"))
         {
             Monster monster = collision.GetComponent<Monster>();
-            if (monster == null) return;
+            if (monster == null || monster.getDie()) return;
 
             OnHit(monster);
             monster.SetPlayerDetected(true);

@@ -75,7 +75,7 @@ public class WeaponController : MonoBehaviour
         BaseBullet baseBullet = bullet.GetComponent<BaseBullet>();
         if (baseBullet != null)
         {
-            baseBullet.Init(weaponData.baseDamage);
+            baseBullet.Init(weaponData.damage, weaponData.speed, weaponData.maxRange);
         }
 
         AudioManager.instance.PlaySfx(weaponData.fireSound);
