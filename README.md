@@ -85,6 +85,9 @@ Assets
 
 
 ## 패턴흐름도
+### 무기 생성 로직
+![alt text](<NeverComeLab/Assets/Readme/무기로직.png>)
+
 ### 레버
 ![alt text](<NeverComeLab/Assets/Readme/lever_sequence_diagram.png>)
 
