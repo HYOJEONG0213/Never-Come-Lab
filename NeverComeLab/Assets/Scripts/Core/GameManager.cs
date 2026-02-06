@@ -58,11 +58,11 @@ public class GameManager : MonoBehaviour
 
         else if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                GameObject.Find("Weapon0").GetComponent<Item>().OnClick();
+                GameObject.Find("Weapon0").GetComponent<WeaponUISlot>().OnClick();
             }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            GameObject.Find("Weapon1").GetComponent<Item>().OnClick();
+            GameObject.Find("Weapon1").GetComponent<WeaponUISlot>().OnClick();
         }
     }
 

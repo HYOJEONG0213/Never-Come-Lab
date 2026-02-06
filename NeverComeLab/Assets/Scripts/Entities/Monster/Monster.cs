@@ -445,5 +445,10 @@ public class Monster : MonoBehaviour
         return isAsleep;
     }
 
+    public bool getDie()
+    {
+        return isDie;
+    }
+
 
 }
