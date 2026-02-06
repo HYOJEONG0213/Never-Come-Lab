@@ -78,8 +78,7 @@ public class Player : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (isDie)
-            return; 
+        if (isDie) return; 
 
         if (inputVec.magnitude > 0)
         {
@@ -88,16 +87,11 @@ public class Player : MonoBehaviour
             AnimReset();
 
             //음향 관련(일반 걸음소리, 모래 걸음 소리) 
-            if (!isHide && AudioManager.instance.isPlaying(AudioManager.Sfx.Run))   
+            if (!isHide && AudioManager.instance != null
+                && AudioManager.instance.isPlaying(AudioManager.Sfx.Run))   
             {
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Run);
-                //AudioManager.instance.StopSfx(AudioManager.Sfx.Leave);
             }
-            //else if(isHide && AudioManager.instance.isPlaying(AudioManager.Sfx.Leave))
-            //{
-            //    //AudioManager.instance.PlaySfx(AudioManager.Sfx.Leave);
-            //    AudioManager.instance.StopSfx(AudioManager.Sfx.Run);
-            //}
 
             if (inputVec.y > 0)
             {
@@ -118,7 +112,7 @@ public class Player : MonoBehaviour
                 spriter.flipX = true;
             }
         }
-        else if(inputVec.magnitude == 0)    //움직임 멈추면 애니메이션 정지 시키기 
+        else if(inputVec.magnitude == 0 && AudioManager.instance != null)    //움직임 멈추면 애니메이션 정지 시키기 
         {
             AudioManager.instance.StopSfx(AudioManager.Sfx.Run);
             //AudioManager.instance.StopSfx(AudioManager.Sfx.Leave);

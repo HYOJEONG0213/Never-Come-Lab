@@ -226,22 +226,13 @@ public class StageManager : MonoBehaviour
     {
         currentStage++;
 
-        foreach (Transform child in player.transform)   //생성되어 있는 무기 찾고 다른 무기 Seleted false시키기
+        if(WeaponManager.Instance != null)
         {
-            child.GetComponent<Weapon>().Itemdata.isSelected = false;
-            foreach (Transform button in weaponbutton.transform)
-            {
-                Button buttonComponent = button.GetComponent<Button>();
-                ColorBlock colorBlock = buttonComponent.colors; // 현재 색상 블록 가져오기
-                colorBlock.normalColor = Color.white;
-                colorBlock.selectedColor = Color.white;
-                colorBlock.highlightedColor = Color.white;
-                button.GetComponent<Button>().colors = colorBlock; // 수정된 색상 블록 다시 할당
-            }
+            WeaponManager.Instance.UnequipCurrent();
         }
 
 
-            if (currentStage < stages.Length)
+        if (currentStage < stages.Length)
         {
             InitializeStage(currentStage);
         }
