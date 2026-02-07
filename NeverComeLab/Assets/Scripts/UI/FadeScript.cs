@@ -16,6 +16,7 @@ public class FadeScript : MonoBehaviour
 
     public void FadeOut()   //점점 어두워짐 
     {
+        Panel.gameObject.SetActive(true);
         StartCoroutine(CoFadeOut());
     }
 

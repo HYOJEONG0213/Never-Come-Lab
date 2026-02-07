@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,12 +10,12 @@ public class GameManager : MonoBehaviour
     public PoolManager pool;
     public Player player;
     private int killedMonsters = 0;
-    public FadeScript fade;
-    public GameObject menuSet;
 
     [Header("# Player Info")]
     public int health;
     public int maxHealth = 100 ;
+
+    public static event Action OnGameOver;
 
     void Awake()
     {
@@ -26,8 +27,6 @@ public class GameManager : MonoBehaviour
         {
             Instance.player = this.player;
             Instance.pool = this.pool;
-            Instance.fade = this.fade;
-            Instance.menuSet = this.menuSet;
             Destroy(this.gameObject);
         }
         DontDestroyOnLoad(this.gameObject);
@@ -38,41 +37,18 @@ public class GameManager : MonoBehaviour
         health = maxHealth;
     }
 
-    private void Update()
+    public void GameOver()
     {
-        if (SceneManager.GetActiveScene().name == "GameOver")
-            return;
-
-        if (Input.GetButtonDown("Cancel") && !player.isDie)
-        {
-            if (menuSet == null)
-                return;
-
-            if (menuSet.activeSelf)
-                menuSet.SetActive(false);
-            else
-                menuSet.SetActive(true);
-        }
-        else if (Input.GetKeyDown(KeyCode.R) && !player.isDie)
-            InGame_Menu.Retry();
-
-        else if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                GameObject.Find("Weapon0").GetComponent<WeaponUISlot>().OnClick();
-            }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            GameObject.Find("Weapon1").GetComponent<WeaponUISlot>().OnClick();
-        }
+        OnGameOver?.Invoke();
+        Invoke("LoadGameOverScene", 2f);
+    }
+    private void LoadGameOverScene()
+    {
+        SceneManager.LoadScene("GameOver");
     }
 
     public void IncrementKilledMonsters()
     {
         killedMonsters++;
-    }
-
-    public void GameOver()
-    {
-        SceneManager.LoadScene("GameOver");
     }
 }

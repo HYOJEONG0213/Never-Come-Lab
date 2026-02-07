@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,7 @@ public class Player : MonoBehaviour
     public static bool isStop = false;
     public bool isObstacleHit = false;
 
+    public event Action OnDie;
 
     public Animator anim;
     Rigidbody2D rigid;
@@ -235,28 +237,31 @@ public class Player : MonoBehaviour
 
         if (GameManager.Instance.health <= 0)
         {
-            isDie = true;
-            inputVec = Vector2.zero;
-            rigid.velocity = Vector2.zero;
-
-            anim.speed = 1;
-            anim.SetTrigger("Dead");
-
-            AudioManager.instance.StopSfx(AudioManager.Sfx.Run);
-            //AudioManager.instance.StopSfx(AudioManager.Sfx.Leave);
-            AudioManager.instance.PlaySfx(AudioManager.Sfx.PlayerDie);
-
-            PlayerPrefs.SetString("CurrentScene", SceneManager.GetActiveScene().name);
-            PlayerPrefs.Save();
-
-            GameManager.Instance.fade.FadeOut();
-            GameManager.Instance.Invoke("GameOver", 2f);
-
-                    
+            Die();
         }
 
         Invoke("OffDamaged", 0.2f);
         isHit = false;
+    }
+
+    void Die()
+    {
+        isDie = true;
+        inputVec = Vector2.zero;
+        rigid.velocity = Vector2.zero;
+
+        anim.speed = 1;
+        anim.SetTrigger("Dead");
+
+        AudioManager.instance.StopSfx(AudioManager.Sfx.Run);
+        //AudioManager.instance.StopSfx(AudioManager.Sfx.Leave);
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.PlayerDie);
+
+        PlayerPrefs.SetString("CurrentScene", SceneManager.GetActiveScene().name);
+        PlayerPrefs.Save();
+
+        OnDie?.Invoke();
+        GameManager.Instance.GameOver();
     }
 
     void OffDamaged()
