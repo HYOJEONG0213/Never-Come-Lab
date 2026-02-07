@@ -231,11 +231,10 @@ public class Player : MonoBehaviour
         gameObject.layer = 9;
         spriter.color = new Color(1, 1, 1, 0.4f);
 
-        GameManager.Instance.health -= damage;
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Damage);
         Debug.Log("남은 플레이어 체력: " + GameManager.Instance.health);
 
-        if (GameManager.Instance.health <= 0)
+        if (GameManager.Instance.ApplyDamage(damage))
         {
             Die();
         }

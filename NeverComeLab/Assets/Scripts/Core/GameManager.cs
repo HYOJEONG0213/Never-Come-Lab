@@ -37,6 +37,17 @@ public class GameManager : MonoBehaviour
         health = maxHealth;
     }
 
+    public bool ApplyDamage(int damage)
+    {
+        health -= damage;
+        if(health <= 0)
+        {
+            GameOver();
+            return true;
+        }
+        return false;
+    }
+
     public void GameOver()
     {
         OnGameOver?.Invoke();
