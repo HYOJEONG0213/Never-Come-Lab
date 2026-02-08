@@ -226,9 +226,9 @@ public class StageManager : MonoBehaviour
     {
         currentStage++;
 
-        if(WeaponManager.Instance != null)
+        if(player.weaponManger != null)
         {
-            WeaponManager.Instance.UnequipCurrent();
+            player.weaponManger.UnequipCurrent();
         }
 
 

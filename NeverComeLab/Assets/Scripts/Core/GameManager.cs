@@ -37,6 +37,11 @@ public class GameManager : MonoBehaviour
         health = maxHealth;
     }
 
+    public void RegisterPlayer(Player newPlayer)
+    {
+        player = newPlayer; 
+    }
+
     public bool ApplyDamage(int damage)
     {
         health -= damage;

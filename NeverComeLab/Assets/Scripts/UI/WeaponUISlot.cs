@@ -12,6 +12,7 @@ public class WeaponUISlot : MonoBehaviour
     public Button weaponButton;
     public Image icon;
 
+    private WeaponManager weaponManager;
 
     private void Awake()
     {
@@ -24,21 +25,20 @@ public class WeaponUISlot : MonoBehaviour
         }
     }
 
-    private void Start()
+    public void Initialize(WeaponManager manager)
     {
-        if (WeaponManager.Instance != null)
-        {
-            WeaponManager.Instance.OnWeaponChanged += UpdateUI;
-            UpdateUI(-1);
-        }
+        weaponManager = manager;
+        weaponManager.OnWeaponChanged += UpdateUI;
+        UpdateUI(-1);
     }
+
 
     // 메모리 누수 방지용
     private void OnDestroy()
     {
-        if (WeaponManager.Instance != null)
+        if (weaponManager != null)
         {
-            WeaponManager.Instance.OnWeaponChanged -= UpdateUI;
+            weaponManager.OnWeaponChanged -= UpdateUI;
         }
     }
 
@@ -46,7 +46,7 @@ public class WeaponUISlot : MonoBehaviour
     {
         if(data != null)
         {
-            WeaponManager.Instance.ToggleWeapon(data);
+            weaponManager.ToggleWeapon(data);
         }
     }
 

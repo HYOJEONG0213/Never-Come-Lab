@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
@@ -12,6 +13,24 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         if (Instance == null) Instance = this;
+    }
+
+    private void Start()
+    {
+        if(GameManager.Instance.player != null)
+        {
+            BindWeaponSlots(GameManager.Instance.player);
+        }
+    }
+
+    private void BindWeaponSlots(Player player)
+    {
+        if (player.weaponManger == null) return;
+
+        foreach (var slot in weaponSlots)
+        {
+            slot.Initialize(player.weaponManger);
+        }
     }
 
     private void OnEnable()
