@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7984613758742609259}
   - component: {fileID: 7356982714396088091}
   - component: {fileID: 2900981648915356918}
-  - component: {fileID: 2825430881501660632}
+  - component: {fileID: 2216404836264713998}
   - component: {fileID: 571975677845966269}
   - component: {fileID: 3603458253676666925}
   - component: {fileID: 1308678904976960154}
@@ -110,7 +110,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &2825430881501660632
+--- !u!114 &2216404836264713998
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -119,14 +119,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2824003971557297738}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e531e6139ef76544a953438a0bf5be8, type: 3}
+  m_Script: {fileID: 11500000, guid: 245b2de524417434eb6880cd3ca5d69e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   resetType: 1
   targets:
   - targetObject: {fileID: 0}
-    onMessage: Open
-    offMessage: Close
+    onMessage: 
+    offMessage: 
   isOn: 0
   resetTime: 0
 --- !u!61 &571975677845966269
