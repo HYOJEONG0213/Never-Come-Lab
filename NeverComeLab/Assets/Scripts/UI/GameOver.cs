@@ -5,43 +5,34 @@ using UnityEngine.SceneManagement;
 
 public class GameOver : MonoBehaviour
 {
-    public FadeScript fade;
-    private void Awake()
-    {
-        if (GameManager.Instance.fade == null)
-        {
-            fade = FindObjectOfType<FadeScript>();
-        }
-        else if (GameManager.Instance.fade != null)
-        {
-            fade = GameManager.Instance.fade;
-        }
-
-    }
-
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            fade.FadeOut();
+            if (UIManager.Instance != null) UIManager.Instance.GameOverEffect();
+
             GameManager.Instance.health = GameManager.Instance.maxHealth;
             string currentScene = PlayerPrefs.GetString("CurrentScene", "Unknown Scene");
 
-            if (currentScene == "Stage1")
-            {
-                AudioManager.instance.PlayBgm(AudioManager.Bgm.Stage1); //브금 시작
-            }
-            else if (currentScene == "Stage2")
-            {
-                AudioManager.instance.PlayBgm(AudioManager.Bgm.Stage2); //브금 시작
-            }
-
+            PlayBgmForScene(currentScene);
             SceneManager.LoadScene(currentScene);
         }
         else if (Input.GetKeyDown(KeyCode.Escape))
         {
             GameManager.Instance.health = GameManager.Instance.maxHealth;
             SceneManager.LoadScene("Main_Demo");
+        }
+    }
+
+    void PlayBgmForScene(string currentScene)
+    {
+        if (currentScene == "Stage1")
+        {
+            AudioManager.instance.PlayBgm(AudioManager.Bgm.Stage1); //브금 시작
+        }
+        else if (currentScene == "Stage2")
+        {
+            AudioManager.instance.PlayBgm(AudioManager.Bgm.Stage2); //브금 시작
         }
     }
 }
