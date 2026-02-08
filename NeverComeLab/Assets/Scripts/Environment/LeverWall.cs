@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Tilemaps;
 
-public class LeverWall : MonoBehaviour
+public class LeverWall : MonoBehaviour, IOperatable
 {
     public bool isOpen;
     Collider2D spriteCollider;
@@ -13,6 +13,7 @@ public class LeverWall : MonoBehaviour
 
     private NavMeshSurface navSurface;
     private NavMeshModifier navModifier;
+
     void Start()
     {
         spriteCollider = GetComponent<Collider2D>();
@@ -59,6 +60,12 @@ public class LeverWall : MonoBehaviour
         Visibility();
         spriteCollider.isTrigger = !spriteCollider.isTrigger;
         DynamicBake("Not Walkable");
+    }
+
+    public void Operate()
+    {
+        if (isOpen) Close();
+        else Open();
     }
 
     public void Toggle()

@@ -36,13 +36,16 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        // 레버 작동
         if (Input.GetKeyDown(KeyCode.E))
         {
-            colliders.ForEach(n =>
+            foreach (Collider2D collider in colliders)
             {
-                if (n.CompareTag("Lever"))
-                    n.SendMessage("Use", SendMessageOptions.DontRequireReceiver);
-            });
+                IOperatable operatable = collider.GetComponent<IOperatable>();
+
+                if (operatable != null)
+                    operatable.Operate();
+            }
         }
     }
 

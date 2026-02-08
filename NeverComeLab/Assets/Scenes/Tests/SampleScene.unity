@@ -1174,6 +1174,18 @@ PrefabInstance:
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: UseLever
       objectReference: {fileID: 0}
+    - target: {fileID: 2216404836264713998, guid: 4ea88dd262e834c4eb91e23793ad432b, type: 3}
+      propertyPath: resetTime
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2216404836264713998, guid: 4ea88dd262e834c4eb91e23793ad432b, type: 3}
+      propertyPath: resetType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2216404836264713998, guid: 4ea88dd262e834c4eb91e23793ad432b, type: 3}
+      propertyPath: targets.Array.data[0]
+      value: 
+      objectReference: {fileID: 958099337}
     - target: {fileID: 2824003971557297738, guid: 4ea88dd262e834c4eb91e23793ad432b, type: 3}
       propertyPath: m_Name
       value: lever (1)
@@ -6164,6 +6176,10 @@ PrefabInstance:
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: UseLever
       objectReference: {fileID: 0}
+    - target: {fileID: 2216404836264713998, guid: 4ea88dd262e834c4eb91e23793ad432b, type: 3}
+      propertyPath: targets.Array.data[0]
+      value: 
+      objectReference: {fileID: 1269925192}
     - target: {fileID: 2824003971557297738, guid: 4ea88dd262e834c4eb91e23793ad432b, type: 3}
       propertyPath: m_Name
       value: lever

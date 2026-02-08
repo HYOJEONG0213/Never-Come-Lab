@@ -1,17 +1,18 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class Lever : MonoBehaviour
+public class Lever : MonoBehaviour, IOperatable
 {
-    //Never: ÇÑ¹ø ·¹¹ö ¸¸Áö¸é ´Ù½Å ¿ø»óº¹±¸ ¸øÇÔ
-    //OnUse: ¿ŞÂÊ ¿À¸¥ÂÊ ÇÏ´Â°Å ÀÚÀ¯·Î¿ò
-    //Timed: ÀÏÁ¤ ½Ã°£ Áö³ª¸é ¿ø»óÅÂ·Î µ¹¾Æ¿È 
-    //Immediately: ¿­¸®ÀÚ¸¶ÀÚ ¹Ù·Î´İÄ§(°¡Â¥ ·¹¹ö·Î È°¿ë °¡´É / »ç½Ç »ç¿ë¸øÇÏÁê? ²Ã¹ŞÁê? ÀÌ·± ´À³¦)
+    //Never: í•œë²ˆ ë ˆë²„ ë§Œì§€ë©´ ë‹¤ì‹  ì›ìƒë³µêµ¬ ëª»í•¨
+    //OnUse: ì™¼ìª½ ì˜¤ë¥¸ìª½ í•˜ëŠ”ê±° ììœ ë¡œì›€
+    //Timed: ì¼ì • ì‹œê°„ ì§€ë‚˜ë©´ ì›ìƒíƒœë¡œ ëŒì•„ì˜´ 
+    //Immediately: ì—´ë¦¬ìë§ˆì ë°”ë¡œë‹«í˜(ê°€ì§œ ë ˆë²„ë¡œ í™œìš© ê°€ëŠ¥ / ì‚¬ì‹¤ ì‚¬ìš©ëª»í•˜ì¥¬? ê¼´ë°›ì¥¬? ì´ëŸ° ëŠë‚Œ)
     public enum ResetType { Never, OnUse, Timed, Fake }
 
     public ResetType resetType = ResetType.OnUse;
-    public List<TargetMessage> targets = new List<TargetMessage>();
+    public List<GameObject> targets = new List<GameObject>();
     public bool isOn;
     public float resetTime;
 
@@ -23,6 +24,10 @@ public class Lever : MonoBehaviour
         anim = GetComponent<Animator>();    
     }
 
+    public void Operate()
+    {
+        Toggle();
+    }
 
     public void TurnOn()
     {
@@ -34,7 +39,7 @@ public class Lever : MonoBehaviour
 
     public void TurnOff()
     {
-        //OnUse(ÀÚÀ¯·Î¿ò)¿Í Immediately(¹Ù·Î¿ø»óÅÂ)¸¸ ÇØ´ç ÇÔ¼ö ½ÇÇà
+        //OnUse(ììœ ë¡œì›€)ì™€ Immediately(ë°”ë¡œì›ìƒíƒœ)ë§Œ í•´ë‹¹ í•¨ìˆ˜ ì‹¤í–‰
         if (isOn && resetType != ResetType.Never && resetType != ResetType.Timed)
         {
             SetState(false);
@@ -43,7 +48,7 @@ public class Lever : MonoBehaviour
 
     public void TimeReset()
     {
-        //Timed(ÀÏÁ¤½Ã°£ Áö³ª¸é ´İÄ§)¸¸ ÇØ´ç ÇÔ¼ö ½ÇÇà. À¯Àú ¸¶À½´ë·Î off ¸øÇÏ°Ô µû·Î ÇÔ¼ö·Î »­. 
+        //Timed(ì¼ì •ì‹œê°„ ì§€ë‚˜ë©´ ë‹«ì¹¨)ë§Œ í•´ë‹¹ í•¨ìˆ˜ ì‹¤í–‰. ìœ ì € ë§ˆìŒëŒ€ë¡œ off ëª»í•˜ê²Œ ë”°ë¡œ í•¨ìˆ˜ë¡œ ëºŒ. 
         SetState(false);
     }
 
@@ -67,14 +72,8 @@ public class Lever : MonoBehaviour
 
         if (on)
         {
-            foreach (var target in targets)
-            {
-                if (target.targetObject != null && !string.IsNullOrEmpty(target.onMessage))
-                {
-                    target.targetObject.SendMessage(target.onMessage); 
-                }
-            }  //Å¸ÄÏ(LeverWall)¿¡ OnMessage ÇÔ¼ö¸í¿¡ ¸Â´Â ¸Ş¼¼Áö Àü¼Û 
-
+            //íƒ€ì¼“(LeverWall)ì— ê¸°ëŠ¥ ê°€ëŠ¥í•œë†ˆ ì°¾ìŒ 
+            OperateTargets();
 
             if (resetType == ResetType.Fake)
                 TurnOff();
@@ -83,13 +82,17 @@ public class Lever : MonoBehaviour
         }
         else if (!on)
         {
-            foreach (var target in targets)
-            {
-                if (target.targetObject != null && !string.IsNullOrEmpty(target.offMessage))
-                {
-                    target.targetObject.SendMessage(target.offMessage); // OffMessage Àü¼Û
-                }
-            } //Å¸ÄÏ(LeverWall)¿¡ OffMessage ÇÔ¼ö¸í¿¡ ¸Â´Â ¸Ş¼¼Áö Àü¼Û 
+            OperateTargets();
+        }
+    }
+
+    void OperateTargets()
+    {
+        foreach (var target in targets)
+        {
+            IOperatable operatable = target.GetComponent<IOperatable>();
+            if (operatable != null)
+                operatable.Operate();
         }
     }
 }
