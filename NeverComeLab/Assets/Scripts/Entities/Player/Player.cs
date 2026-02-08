@@ -23,15 +23,30 @@ public class Player : MonoBehaviour
     public SpriteRenderer spriter;
     List<Collider2D> colliders = new List<Collider2D>();
 
-//블럭 밀기 관련
+    public WeaponManager weaponManger;
+
+    //블럭 밀기 관련
     private GameObject nearbyBlock = null; // 플레이어가 근접한 블럭을 추적하기 위한 변수
     public KeyCode pushKey = KeyCode.Space; // 블럭을 미는 키 설정
 
-    void Start()
+    void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
         spriter = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+
+        if (weaponManger == null)
+        {
+            weaponManger = GetComponent<WeaponManager>();
+        }
+    }
+
+    private void Start()
+    {
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.RegisterPlayer(this);
+        }
     }
 
     private void Update()
