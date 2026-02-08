@@ -93,7 +93,9 @@ Assets
 ![alt text](<NeverComeLab/Assets/Readme/무기 로직2.png>)
 
 ### 레버
-![alt text](<NeverComeLab/Assets/Readme/레버 로직.png>)
+<p align="center">
+  <img src="NeverComeLab/Assets/Readme/레버 로직.png" width="50%" alt="레버 로직">
+</p>
 
 ### 게임 오버
 ![alt text](<NeverComeLab/Assets/Readme/게임오버.png>)
