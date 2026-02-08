@@ -9,17 +9,12 @@ public class WeaponController : MonoBehaviour
     private float timer;
     private Player player;
 
-    private void Awake()
-    {
-        //Init();
-        player = GameManager.Instance.player;
-    }
-
     public void Init(WeaponData data)
     {
         weaponData = data;
         timer = 0f;
 
+        player = GameManager.Instance.player;
     }
 
 

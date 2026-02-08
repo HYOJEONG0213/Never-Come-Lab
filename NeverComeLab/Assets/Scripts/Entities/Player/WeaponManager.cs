@@ -5,16 +5,11 @@ using UnityEngine;
 
 public class WeaponManager : MonoBehaviour
 {
-    public static WeaponManager Instance;
     // UI 업데이트 이벤트
     public event Action<int> OnWeaponChanged;
     private int currentWeaponId = -1;
     private Dictionary<int, WeaponController> createdWeapons = new Dictionary<int, WeaponController>();
 
-    private void Awake()
-    {
-        Instance = this;
-    }
 
     public void ToggleWeapon(WeaponData data)
     {
