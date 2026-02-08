@@ -85,13 +85,18 @@ Assets
 
 
 ## 패턴흐름도
+### 메뉴 로직 
+![alt text](<NeverComeLab/Assets/Readme/메뉴, 무기 input.png>)
+
+
 ### 무기 생성 로직
-![alt text](<NeverComeLab/Assets/Readme/무기로직.png>)
+![alt text](<NeverComeLab/Assets/Readme/무기 로직2.png>)
 
 ### 레버
-![alt text](<NeverComeLab/Assets/Readme/lever_sequence_diagram.png>)
+![alt text](<NeverComeLab/Assets/Readme/레버 로직.png>)
 
-
+### 게임 오버
+![alt text](<NeverComeLab/Assets/Readme/게임오버.png>)
 
 
 ## 일화
@@ -121,6 +126,12 @@ Assets
 
 기존 레버는 하나의 벽만 제어해 기능 확장이 어려웠어서 여러 벽을 동시에 제어하고 다양한 동작을 지원하기 위해 **메시지 기반 상호작용**으로 리팩토링함. **동작 종류를 enum으로 분리**하고 제어 대상을 리스트로 확장해 가독성과 재사용성을 높임.
 
+
+### 레버 상호작용 시스템 구조 개선 (SendMessage → Interface)
+
+**문제상황**: 기존 레버 로직을 SendMessage을 통해 상호작용 처리했으나, **Reflection 연산으로 인해 오버헤드**가 우려됨. 또한 문자열 기반 호출로 인해 컴파일 단계에서 에러 검출 불가능. 
+
+**해결방법**: **인터페이스**를 도입해 플레이어가 구체적인 클래스를 알 필요 없이 상호작용할 수 있도록 추상화해 Player와 Lever 간의 결합도를 낮추고, 타입 안정성을 확보함
 
 ### 싱글톤 패턴 남용
 
