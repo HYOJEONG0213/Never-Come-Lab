@@ -27,11 +27,19 @@ public class Player : MonoBehaviour
     private GameObject nearbyBlock = null; // 플레이어가 근접한 블럭을 추적하기 위한 변수
     public KeyCode pushKey = KeyCode.Space; // 블럭을 미는 키 설정
 
-    void Start()
+    void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
         spriter = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+    }
+
+    private void Start()
+    {
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.RegisterPlayer(this);
+        }
     }
 
     private void Update()
